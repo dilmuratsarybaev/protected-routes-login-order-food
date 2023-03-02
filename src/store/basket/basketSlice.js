@@ -131,9 +131,8 @@ export const submitOrder = createAsyncThunk(
   "basket/submitOrder",
   async ({ orderData }, { dispatch, rejectWithValue }) => {
     try {
-      await fetch("https://jsonplaceholder.typicode.com/posts", {
-        method: "POST",
-        body: orderData,
+      await axios.post("https://jsonplaceholder.typicode.com/posts", {
+        orderData,
       });
       dispatch(getBasket());
     } catch (error) {
