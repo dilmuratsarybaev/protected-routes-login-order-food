@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { styled } from "@mui/material";
-import { getMeals } from "../../store/meals/mealsSlice";
+import { getMeals } from "../../store/meals/meals.thunk";
 import { MealItem } from "./meal-Item/MealItem";
 
 export const Meals = () => {

@@ -2,14 +2,16 @@ import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { getTheme } from "../../lib/constants/theme";
 import { getBasket } from "../../store/basket/basketSlice";
 import { uiActions } from "../../store/ui/uiSlice";
 import { BasketButton } from "../basket/BasketButton";
-import { styled as styledMui } from "@mui/system";
 import { styled as styleMuiMaterial } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { signOut } from "../../store/auth/auth.thunk";
 export const Header = ({ onShowBasket, ...rest }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const isAuthorized = useSelector((state) => state.auth.isAuthozired);
   const items = useSelector((state) => state.basket.items);
   const theme = useSelector((state) => state.ui.themeMode);
   const [animationClass, setAnimationClass] = useState("");
@@ -39,6 +41,13 @@ export const Header = ({ onShowBasket, ...rest }) => {
     const themeMode = theme === "light" ? "dark" : "light";
     dispatch(uiActions.changeTheme(themeMode));
   };
+  const signInHandler = () => {
+    navigate("/signin");
+  };
+  const signOutHandler = () => {
+    dispatch(signOut())
+    navigate("/signup");
+  };
   return (
     <Container {...rest}>
       <Logo>ReactMeals</Logo>
@@ -51,6 +60,15 @@ export const Header = ({ onShowBasket, ...rest }) => {
         <StyledMuiButton onClick={themeChangeHandler} variant="contained">
           {theme === "light" ? "Turn dark mode" : "Turn light mode"}
         </StyledMuiButton>
+        {isAuthorized ? (
+          <Button onClick={signOutHandler} variant="contained">
+            Sign Out
+          </Button>
+        ) : (
+          <Button onClick={signInHandler} variant="contained">
+            Sign IN
+          </Button>
+        )}
       </BasketContainer>
     </Container>
   );
@@ -105,4 +123,5 @@ const StyledMuiButton = styleMuiMaterial(Button)(({ theme }) => ({
   fontSize: "10px",
   background: theme.palette.primary.light,
   marginLeft: "10px",
+  marginRight: "10px",
 }));

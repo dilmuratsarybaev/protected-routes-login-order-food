@@ -1,6 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-import { BASE_URL, fetchApi } from "../../lib/fatchApi";
+import { createSlice } from "@reduxjs/toolkit";
+import { getMeals } from "./meals.thunk";
 
 export const mealsActionTypes = {
   GET_MEALS_SUCCES: "GET_MEALS_SUCCES",
@@ -35,14 +34,4 @@ export const mealsSlice = createSlice({
 
 export const mealsActions = mealsSlice.actions;
 
-export const getMeals = createAsyncThunk(
-  "meals/getMeals",
-  async (payload, { dispatch, rejectWithValue }) => {
-    try {
-      const { data } = await axios.get(`${BASE_URL}/foods`);
-      return data.data;
-    } catch (error) {
-      return rejectWithValue("Something wents wrong");
-    }
-  }
-);
+
