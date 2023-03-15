@@ -1,3 +1,4 @@
+import { Typography } from '@mui/material'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Route, Routes } from 'react-router-dom'
@@ -14,17 +15,19 @@ import { ProtectedRoutes } from './ProtectedRoutes'
 export const AppRoutes = () => {
     const role = useSelector((state) => state.auth.user.role)
 
+    const isAllowed = (roles) => {
+        return roles.includes(role)
+    }
+
     return (
         <Routes>
             <Route
                 path="/"
                 element={
                     <ProtectedRoutes
-                        isAllowed={[UserRole.GUEST, UserRole.USER].includes(
-                            role
-                        )}
-                        fallBackPath={'/admin/meals'}
-                        component={<UserLayout />}
+                        isAllowed={isAllowed([UserRole.GUEST, UserRole.USER])}
+                        fallBackPath="/admin/meals"
+                        component={UserLayout}
                     />
                 }
             >
@@ -32,11 +35,22 @@ export const AppRoutes = () => {
                     index
                     element={
                         <ProtectedRoutes
-                            isAllowed={[UserRole.GUEST, UserRole.USER].includes(
-                                role
-                            )}
-                            fallBackPath={'/admin/meals'}
-                            component={<MealsPage />}
+                            isAllowed={isAllowed([
+                                UserRole.GUEST,
+                                UserRole.USER,
+                            ])}
+                            fallBackPath="/admin/meals"
+                            component={MealsPage}
+                        />
+                    }
+                />
+                <Route
+                    path="/userorders"
+                    element={
+                        <ProtectedRoutes
+                            isAllowed={isAllowed([UserRole.USER])}
+                            fallBackPath="/userorders"
+                            component={AdminOrders}
                         />
                     }
                 />
@@ -44,11 +58,14 @@ export const AppRoutes = () => {
                     path="signup"
                     element={
                         <ProtectedRoutes
-                            isAllowed={[UserRole.GUEST].includes(role)}
+                            isAllowed={isAllowed([
+                                UserRole.GUEST,
+                                UserRole.USER,
+                            ])}
                             fallBackPath={
                                 role === UserRole.ADMIN ? '/admin/meals' : '/'
                             }
-                            component={<SingUp />}
+                            component={SingUp}
                         />
                     }
                 />
@@ -56,11 +73,14 @@ export const AppRoutes = () => {
                     path="signin"
                     element={
                         <ProtectedRoutes
-                            isAllowed={[UserRole.GUEST].includes(role)}
+                            isAllowed={isAllowed([
+                                UserRole.GUEST,
+                                UserRole.USER,
+                            ])}
                             fallBackPath={
                                 role === UserRole.ADMIN ? '/admin/meals' : '/'
                             }
-                            component={<SingIn />}
+                            component={SingIn}
                         />
                     }
                 />
@@ -69,9 +89,9 @@ export const AppRoutes = () => {
                 path="/admin"
                 element={
                     <ProtectedRoutes
-                        isAllowed={[UserRole.ADMIN].includes(role)}
-                        fallBackPath={'/'}
-                        component={<AdminLayout />}
+                        isAllowed={isAllowed([UserRole.ADMIN])}
+                        fallBackPath="/"
+                        component={AdminLayout}
                     />
                 }
             >
@@ -79,9 +99,9 @@ export const AppRoutes = () => {
                     path="meals"
                     element={
                         <ProtectedRoutes
-                            isAllowed={[UserRole.ADMIN].includes(role)}
-                            fallBackPath={'/'}
-                            component={<AdminMeals />}
+                            isAllowed={isAllowed([UserRole.ADMIN])}
+                            fallBackPath="/"
+                            component={AdminMeals}
                         />
                     }
                 />
@@ -89,13 +109,17 @@ export const AppRoutes = () => {
                     path="orders"
                     element={
                         <ProtectedRoutes
-                            isAllowed={[UserRole.ADMIN].includes(role)}
-                            fallBackPath={'/'}
-                            component={<AdminOrders />}
+                            isAllowed={isAllowed([UserRole.ADMIN])}
+                            fallBackPath="/"
+                            component={AdminOrders}
                         />
                     }
                 />
             </Route>
+            <Route
+                path="*"
+                element={<Typography>404 Page Not Found</Typography>}
+            />
         </Routes>
     )
 }

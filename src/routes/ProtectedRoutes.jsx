@@ -1,9 +1,14 @@
 import React from 'react'
 import { Navigate } from 'react-router-dom'
 
-export const ProtectedRoutes = ({ component, fallBackPath, isAllowed }) => {
+export const ProtectedRoutes = ({
+    component: Component,
+    fallBackPath,
+    isAllowed,
+}) => {
     if (!isAllowed) {
         return <Navigate to={fallBackPath} />
     }
-    return component
+
+    return <Component />
 }

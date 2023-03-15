@@ -13,7 +13,7 @@ export const AdminMeals = () => {
     const [description, setDescription] = useState('')
     const [price, setPrice] = useState('')
     const [edit, setEdit] = useState(false)
-    const [mealId, setMealId] = useState("")
+    const [mealId, setMealId] = useState('')
     const newMeals = useSelector((state) => state.meals.meals)
     const [isModalVisible, setModalVisible] = useState(false)
     useEffect(() => {

@@ -4,7 +4,7 @@ const initialState = {
     themeMode: 'light',
     snackbar: {
         isOpen: false,
-        severity: '',
+        severity: 'info',
         message: '',
     },
 }

@@ -45,9 +45,9 @@ export const authSlice = createSlice({
             state.isAuthozired = true
             state.token = payload.token
             state.user = {
-                name: payload.name,
-                email: payload.email,
-                role: payload.role,
+                name: payload.user.name,
+                email: payload.user.email,
+                role: payload.user.role,
             }
         })
         builder.addCase(signOut.fulfilled, (state) => {

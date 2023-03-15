@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { signIn } from '../../store/auth/auth.thunk'
 export const SingIn = () => {
-    const naviagate = useNavigate()
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -27,7 +27,7 @@ export const SingIn = () => {
         }
         dispatch(signIn(data))
             .unwrap()
-            .then(() => naviagate('/'))
+            .then(() => navigate('/admin/meals'))
             .catch((e) => setError(e.response.data.message))
     }
 

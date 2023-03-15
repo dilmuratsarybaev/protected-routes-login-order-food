@@ -8,9 +8,9 @@ import {
 
 export const getMeals = createAsyncThunk(
     'meals/getMeals',
-    async (payload, { getState, rejectWithValue }) => {
+    async (payload, { rejectWithValue }) => {
         try {
-            const { data } = await getMealRequest(getState().auth.token)
+            const { data } = await getMealRequest()
             return data.data
         } catch (error) {
             return rejectWithValue('Something wents wrong')
@@ -19,11 +19,11 @@ export const getMeals = createAsyncThunk(
 )
 
 export const postMeals = createAsyncThunk(
-    'meals/getMeals',
-    async (newMeal, { getState, rejectWithValue }) => {
+    'meals/Postmeals',
+    async (newMeal, { getState, rejectWithValue, dispatch }) => {
         try {
-            await postMealRequest(newMeal, getState().auth.token)
-            getMeals()
+            await postMealRequest(newMeal)
+            dispatch(getMeals())
         } catch (error) {
             return rejectWithValue(error)
         }
@@ -32,10 +32,10 @@ export const postMeals = createAsyncThunk(
 
 export const removeMeals = createAsyncThunk(
     'meals/deleteMeals',
-    async (id, { getState, rejectWithValue }) => {
+    async (id, { rejectWithValue, dispatch }) => {
         try {
-            await deleteMealRequest(id, getState().auth.token)
-            getMeals()
+            await deleteMealRequest(id)
+            dispatch(getMeals())
         } catch (error) {
             return rejectWithValue(error)
         }
@@ -44,10 +44,10 @@ export const removeMeals = createAsyncThunk(
 
 export const updateMeals = createAsyncThunk(
     'meals/updateMeals',
-    async (data, { getState, rejectWithValue }) => {
+    async (data, { rejectWithValue, dispatch }) => {
         try {
-            await editMealRequest(getState().auth.token, data)
-            getMeals()
+            await editMealRequest(data)
+            dispatch(getMeals())
         } catch (error) {
             rejectWithValue(error)
         }
